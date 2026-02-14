@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:image" content="public/images/favicon.jpg">
+  <link rel="icon" href="public/images/favicon.jpg" type="image/jpeg" />
+  <title>PenguSonuu❤️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Sacramento&family=Outfit:wght@100..900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="public/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+  <div id="magic-cursor"></div>
+  <div id="noise-overlay"></div>
+  <div id="fireflies-container"></div>
+  <canvas id="starfield"></canvas>
+  <div id="penguin-container"></div>
+  <div id="aurora-container">
+    <div class="aurora-orb orb-1"></div>
+    <div class="aurora-orb orb-2"></div>
+    <div class="aurora-orb orb-3"></div>
+    <div class="aurora-orb orb-4"></div>
+    <div class="aurora-orb orb-5"></div>
+  </div>
+  <div id="overlay"></div>
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Theme Toggle -->
+  <div class="toggle" id="themeToggle">🌙 / ☀️</div>
+  <div class="toggle" id="candleToggle" style="top: 80px;"> 🕯️</div>
+
+  <!-- 1. Lock Screen -->
+  <section id="lock-section" class="active-section">
+    <div class="glass-card">
+      <h1>Oiii its for U❤️</h1>
+      <p>Enter password to unlock:</p>
+
+      <div class="input-group">
+        <input type="password" id="passwordInput" placeholder="🐧🦋🐧🦋🐧🦋" maxlength="6">
+        <button id="unlockBtn">Unlock 💖</button>
+      </div>
+      <p id="error-msg"></p>
+    </div>
+  </section>
+
+  <!-- 2. Intro Sequence (Apple Style Text) -->
+  <section id="intro-section" class="hidden-section">
+    <div id="text-container"></div>
+    <!-- Button appears after sequence -->
+    <button id="startJourneyBtn" class="float-btn" style="display: none;">Enter Our World ✨</button>
+  </section>
+
+  <!-- 3. Memories Gallery -->
+  <section id="gallery-section" class="hidden-section">
+    <div class="glass-card wide-card">
+      <h2>Our Memories 💑</h2>
+      <div class="slider">
+        <!-- User Memories -->
+
+        <div class="photo-card" style="background-image: url('public/images/memory1.jpg')"></div>
+        <div class="photo-card" style="background-image: url('public/images/memory5.jpg')"></div>
+        <div class="photo-card" style="background-image: url('public/images/memory3.jpg')"></div>
+        <div class="photo-card" style="background-image: url('public/images/memory6.jpg')"></div>
+        <div class="photo-card" style="background-image: url('public/images/memory4.jpg')"></div>
+        <div class="photo-card" style="background-image: url('public/images/memory2.jpg')"></div>
+        <!-- Fallback styling if images missing -->
+
+      </div>
+      <button class="nav-btn" onclick="nextSection('quiz-section')">Take the Quiz 🧠</button>
+    </div>
+  </section>
+
+  <!-- 3.5. Quiz Section -->
+  <section id="quiz-section" class="hidden-section">
+    <div class="glass-card">
+      <h2>How well do you know each other? 🧠</h2>
+      <div class="quiz-container">
+        <p class="quiz-question">Why did we met?</p>
+        <div class="button-zone quiz-options"
+          style="position:relative; height:auto; display:flex; gap:10px; justify-content:center; margin-bottom:20px;">
+          <button onclick="handleQuiz(true, this)" style="position:static; transform:none;">God's Plan</button>
+          <button onclick="handleQuiz(false, this)" style="position:static; transform:none;">Randomly</button>
+        </div>
+        <div class="button-zone quiz-options"
+          style="position:relative; height:auto; display:flex; gap:10px; justify-content:center; margin-bottom:20px;">
+          <button onclick="handleQuiz(false, this)" style="position:static; transform:none;">To eat & Explore
+            Places together 🍕</button>
+          <button onclick="handleQuiz(true, this)" style="position:static; transform:none;">Destiny ✨</button>
+        </div>
+        <div class="button-zone quiz-options"
+          style="position:relative; height:auto; display:flex; gap:10px; justify-content:center; margin-bottom:20px;">
+          <button onclick="handleQuiz(true, this)" style="position:static; transform:none;">Written in the stars
+            🌟</button>
+          <button onclick="handleQuiz(false, this)" style="position:static; transform:none;">Pure Luck 🍀</button>
+        </div>
+        <p id="quizResult" style="min-height: 24px; font-weight:bold;"></p>
+      </div>
+      <button class="nav-btn" onclick="nextSection('letter-section')">Read My Heart 💌</button>
+    </div>
+  </section>
+
+  <!-- 4. Letter Section -->
+  <section id="letter-section" class="hidden-section">
+    <div class="glass-card">
+      <h2>My Letter To You ✍️</h2>
+      <div class="letter-content">
+        <p id="typewriterText"></p>
+        <span class="cursor">|</span>
+      </div>
+      <button class="nav-btn" id="nextLetterBtn" onclick="showNextLetter()">Read P.S. 💌</button>
+      <button class="nav-btn" onclick="nextSection('music-section')">Our Song 🎵</button>
+    </div>
+  </section>
+
+  <!-- 5. Music Section -->
+  <section id="music-section" class="hidden-section">
+    <div class="glass-card">
+      <h2>Our Song 🎵</h2>
+      <div class="iframe-container">
+        <!-- User to replace src -->
+        <!-- Local Audio Player -->
+        <audio id="our-song" controls style="width: 100%; border-radius: 12px;">
+          <source src="public/audio/Khat.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+      <button class="nav-btn" onclick="nextSection('map-section')">Our First Trip📍</button>
+    </div>
+  </section>
+
+  <!-- 6. Map Section -->
+  <section id="map-section" class="hidden-section">
+    <div class="glass-card">
+      <h2>Our First Trip Together📍</h2>
+      <div class="iframe-container map-frame">
+
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15537.61785294426!2d77.70296164534453!3d13.199904394187364!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1cfe75446265%3A0x296c70e9a129418e!2sKempegowda%20International%20Airport%20Bengaluru!5e0!3m2!1sen!2sin!4v1770833857736!5m2!1sen!2sin"
+          width="700" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+
+      </div>
+      <button class="nav-btn" onclick="nextSection('proposal-section')">Final Question 💍</button>
+    </div>
+  </section>
+
+  <!-- 7. Proposal Section -->
+  <section id="proposal-section" class="hidden-section">
+    <div id="proposal-card" class="glass-card">
+      <svg class="art" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="fur" x1="0" x2="1">
+            <stop offset="0" stop-color="#f7c7a1" />
+            <stop offset="1" stop-color="#f2a97b" />
+          </linearGradient>
+          <linearGradient id="heart" x1="0" x2="1">
+            <stop offset="0" stop-color="#ff4d7d" />
+            <stop offset="1" stop-color="#ff1f68" />
+          </linearGradient>
+        </defs>
+        <path d="M250 50 C250 33 270 25 282 38 C294 25 314 33 314 50 C314 78 282 92 282 106 C282 92 250 78 250 50Z"
+          fill="url(#heart)" />
+        <path d="M90 120 C90 70 140 40 190 60 C240 40 290 70 290 120 C290 180 240 210 190 210 C140 210 90 180 90 120Z"
+          fill="url(#fur)" />
+        <path d="M110 92 L95 55 L140 78 Z" fill="#f2a97b" />
+        <path d="M270 92 L285 55 L240 78 Z" fill="#f2a97b" />
+        <circle cx="160" cy="130" r="8" />
+        <circle cx="220" cy="130" r="8" />
+        <path
+          d="M190 144 C186 144 182 148 182 152 C182 160 190 164 190 170 C190 164 198 160 198 152 C198 148 194 144 190 144Z"
+          fill="#ff7aa2" />
+      </svg>
+
+      <h1>Triparna, Will you be my Valentine?</h1>
+
+      <div class="button-zone" id="zone">
+        <button id="yesBtn">Yes</button>
+        <button id="noBtn">No</button>
+      </div>
+
+      <div class="result" id="result" style="display: none;">
+        <h2>YAY! 🎉</h2>
+        <p>I knew you'd say yes! ❤️</p>
+        <h3 id="timer"></h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- Legacy Button (Hidden) -->
+  <button id="valentinesButton" style="display:none;"></button>
+
+  <!-- Footer Credit -->
+  <div class="footer-credit">Designed and Created by &copy;Nilanjan</div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
