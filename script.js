@@ -261,7 +261,6 @@ function initProposal() {
         noBtn.style.display = 'none';
         result.style.display = 'block';
         startConfetti();
-        startTimer();
     });
 }
 
@@ -286,17 +285,7 @@ function startConfetti() {
     }());
 }
 
-function startTimer() {
-    const timer = document.getElementById('timer');
-    const target = new Date("Feb 14, 2026 00:00:00").getTime();
 
-    setInterval(() => {
-        const now = new Date().getTime();
-        const dist = target - now;
-        const days = Math.floor(dist / (1000 * 60 * 60 * 24));
-        timer.innerText = `Valentine's Day in ${days} days ❤️`;
-    }, 1000);
-}
 
 
 // --- Optimization: RAF Loop for Mouse Effects ---
